@@ -8,7 +8,7 @@ import com.weatherapp.R;
 /**
  * Created by Klemen on 13.10.2015.
  */
-public class ItemClickSupport {
+public class RecyclerViewIteClickHelper {
 
     private final RecyclerView mRecyclerView;
     private OnItemClickListener mOnItemClickListener;
@@ -50,34 +50,34 @@ public class ItemClickSupport {
         }
     };
 
-    private ItemClickSupport(RecyclerView recyclerView) {
+    private RecyclerViewIteClickHelper(RecyclerView recyclerView) {
         mRecyclerView = recyclerView;
         mRecyclerView.setTag(R.id.item_click_support, this);
         mRecyclerView.addOnChildAttachStateChangeListener(mAttachListener);
     }
 
-    public static ItemClickSupport addTo(RecyclerView view) {
-        ItemClickSupport support = (ItemClickSupport) view.getTag(R.id.item_click_support);
+    public static RecyclerViewIteClickHelper addTo(RecyclerView view) {
+        RecyclerViewIteClickHelper support = (RecyclerViewIteClickHelper) view.getTag(R.id.item_click_support);
         if (support == null) {
-            support = new ItemClickSupport(view);
+            support = new RecyclerViewIteClickHelper(view);
         }
         return support;
     }
 
-    public static ItemClickSupport removeFrom(RecyclerView view) {
-        ItemClickSupport support = (ItemClickSupport) view.getTag(R.id.item_click_support);
+    public static RecyclerViewIteClickHelper removeFrom(RecyclerView view) {
+        RecyclerViewIteClickHelper support = (RecyclerViewIteClickHelper) view.getTag(R.id.item_click_support);
         if (support != null) {
             support.detach(view);
         }
         return support;
     }
 
-    public ItemClickSupport setOnItemClickListener(OnItemClickListener listener) {
+    public RecyclerViewIteClickHelper setOnItemClickListener(OnItemClickListener listener) {
         mOnItemClickListener = listener;
         return this;
     }
 
-    public ItemClickSupport setOnItemLongClickListener(OnItemLongClickListener listener) {
+    public RecyclerViewIteClickHelper setOnItemLongClickListener(OnItemLongClickListener listener) {
         mOnItemLongClickListener = listener;
         return this;
     }

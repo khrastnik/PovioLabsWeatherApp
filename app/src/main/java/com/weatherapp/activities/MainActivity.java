@@ -9,15 +9,17 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
 import com.weatherapp.helpers.Const;
-import com.weatherapp.helpers.ItemClickSupport;
+import com.weatherapp.helpers.RecyclerViewIteClickHelper;
 import com.weatherapp.R;
 import com.weatherapp.adapters.WeatherCityAdapter;
+import com.weatherapp.helpers.RecyclerViewTouchHelper;
 import com.weatherapp.managers.WeatherCityManager;
 
 import java.util.List;
@@ -43,6 +45,17 @@ public class MainActivity extends AppCompatActivity {
 
         setRecyclerViewData();
 
+        setRecyclerSwipeListener();
+    }
+
+    /**
+     * Set recycler view swipe (left right) to dismiss item
+     */
+    private void setRecyclerSwipeListener() {
+
+        ItemTouchHelper.Callback callback = new RecyclerViewTouchHelper(weatherCityAdapter);
+        ItemTouchHelper helper = new ItemTouchHelper(callback);
+        helper.attachToRecyclerView(recyclerView);
     }
 
     /**
@@ -158,6 +171,7 @@ public class MainActivity extends AppCompatActivity {
         setRecyclerViewItemListener();
 
         setPullToRefresh();
+
     }
 
     /**
@@ -165,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setRecyclerViewItemListener() {
 
-        ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+        RecyclerViewIteClickHelper.addTo(recyclerView).setOnItemClickListener(new RecyclerViewIteClickHelper.OnItemClickListener() {
             @Override
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
 

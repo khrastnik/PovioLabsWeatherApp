@@ -4,7 +4,10 @@ package com.weatherapp.adapters;
  * Created by Klemen on 17.11.2015.
  */
 
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +19,6 @@ import com.weatherapp.R;
 import java.util.Collections;
 import java.util.List;
 
-import com.weatherapp.interfaces.IHttpRequest;
 import com.weatherapp.managers.WeatherCityManager;
 import com.weatherapp.models.WeatherCityModel;
 
@@ -27,8 +29,6 @@ public class WeatherCityAdapter extends RecyclerView.Adapter<WeatherCityAdapter.
 
     private LayoutInflater inflater;
     private Context context;
-
-    private TextView tvTemperature;
 
     public WeatherCityAdapter(Context context, List<WeatherCityModel> cityItems) {
         this.context = context;
@@ -53,7 +53,7 @@ public class WeatherCityAdapter extends RecyclerView.Adapter<WeatherCityAdapter.
 
         holder.cityName.setText(current.getName());
 
-        setCityTemperature(holder.temperature,current);
+        setCityTemperature(holder.temperature, current);
 
     }
 
@@ -62,8 +62,17 @@ public class WeatherCityAdapter extends RecyclerView.Adapter<WeatherCityAdapter.
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-    public void removeItem(int pos) {
-        cityItems.remove(pos);
+    public void remove(int position) {
+
+        cityItems.remove(position);
+
+        new WeatherCityManager().deleteItem(context, cityItems.get(position).getId());
+
+       /* Snackbar.make(((Activity)context).findViewById(android.R.id.content), "Item has been deleted.", Snackbar.LENGTH_LONG)
+                .setActionTextColor(Color.RED)
+                .show();*/
+
+        notifyItemRemoved(position);
     }
 
     @Override
@@ -74,12 +83,12 @@ public class WeatherCityAdapter extends RecyclerView.Adapter<WeatherCityAdapter.
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView cityName,temperature;
+        TextView cityName, temperature;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             cityName = (TextView) itemView.findViewById(R.id.city_name);
-            temperature = (TextView)itemView.findViewById(R.id.city_temperature);
+            temperature = (TextView) itemView.findViewById(R.id.city_temperature);
         }
     }
 
@@ -94,7 +103,7 @@ public class WeatherCityAdapter extends RecyclerView.Adapter<WeatherCityAdapter.
         notifyDataSetChanged();
     }
 
-    private void setCityTemperature(TextView tvTemp,WeatherCityModel weatherCityModel){
-        new WeatherCityManager().getWeatherTemperature(context,tvTemp,weatherCityModel.getName());
+    private void setCityTemperature(TextView tvTemp, WeatherCityModel weatherCityModel) {
+        new WeatherCityManager().getWeatherTemperature(context, tvTemp, weatherCityModel.getName());
     }
 }

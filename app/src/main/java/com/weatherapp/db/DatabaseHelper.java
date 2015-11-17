@@ -109,11 +109,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
 
-                WeatherCityModel corFactor = new WeatherCityModel();
-                corFactor.setId(Integer.valueOf(cursor.getString(0)));
-                corFactor.setName(cursor.getString(1));
+                WeatherCityModel item = new WeatherCityModel();
+                item.setId(Integer.valueOf(cursor.getString(0)));
+                item.setName(cursor.getString(1));
 
-                itemsList.add(corFactor);
+                itemsList.add(item);
 
             } while (cursor.moveToNext());
         }
@@ -125,6 +125,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     /**
      * Delete one city by id
+     *
      * @param id city id
      * @return 1 if deleted is success
      */
