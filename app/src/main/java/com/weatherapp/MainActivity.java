@@ -1,31 +1,125 @@
 package com.weatherapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+
+    private RecyclerView rv;
+    private WeatherCityAdapter weatherCityAdapter;
+    private TextView tvEmptyListHint;
+    private List<WeatherCityModel> cityItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
+        initGUI();
+
+        setRecyclerViewData();
+
+    }
+
+    private void setRecyclerViewData() {
+
+        setCityItems();
+
+        checkEmptyRecyclerView();
+
+        setAdapter();
+    }
+
+    private void setAdapter() {
+        weatherCityAdapter = new WeatherCityAdapter(this,cityItems);
+        rv.setAdapter(weatherCityAdapter);
+    }
+
+    private void setCityItems(){
+        cityItems = new WeatherCityManager().getFakeItems();
+    }
+
+    private void checkEmptyRecyclerView(){
+
+        int cityCount = cityItems.size();
+
+        if(cityCount == 0){
+            tvEmptyListHint.setVisibility(View.VISIBLE);
+        }else{
+            tvEmptyListHint.setVisibility(View.GONE);
+        }
+
+    }
+
+    private void initFab() {
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+
+                /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();*/
+                startAddCityActivity();
+
             }
         });
+    }
+
+    private void startAddCityActivity(){
+
+        Intent intent = new Intent(this,AddCityActivity.class);
+        startActivity(intent);
+
+
+    }
+
+    private void initGUI() {
+
+        setToolbar();
+
+        rv = (RecyclerView)findViewById(R.id.recycler_view);
+        rv.setItemAnimator(new DefaultItemAnimator());
+        rv.setHasFixedSize(true);
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        rv.setLayoutManager(llm);
+
+        setRecyclerViewItemListener();
+
+        tvEmptyListHint = (TextView)findViewById(R.id.empty_list_hint);
+
+        initFab();
+    }
+
+    private void setRecyclerViewItemListener() {
+
+        ItemClickSupport.addTo(rv).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+
+                Intent intent = new Intent(getBaseContext(), DetailCityWeatherActivity.class);
+                intent.putExtra("city", cityItems.get(position));
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void setToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
     }
 
     @Override

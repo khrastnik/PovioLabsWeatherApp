@@ -18,6 +18,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".AddCityActivity"
+            android:label="@string/add_city"
+            android:theme="@style/BaseTheme" >
+        </activity>
+        <activity android:name=".DetailCityWeatherActivity"
+            android:label="@string/detail_city"
+            android:theme="@style/BaseTheme">
+        </activity>
     </application>
 
 </manifest>
