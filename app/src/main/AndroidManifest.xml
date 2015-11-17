@@ -21,6 +21,7 @@
         <activity
             android:name=".AddCityActivity"
             android:label="@string/add_city"
+            android:windowSoftInputMode="stateAlwaysVisible"
             android:theme="@style/BaseTheme" >
         </activity>
         <activity android:name=".DetailCityWeatherActivity"

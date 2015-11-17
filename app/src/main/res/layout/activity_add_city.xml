@@ -17,8 +17,8 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlways"
             android:title="@string/action_settings"
+            app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
     </android.support.design.widget.AppBarLayout>
 
@@ -34,13 +34,16 @@
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_city_name"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp">
 
             <EditText
                 android:id="@+id/input_city_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/enter_city_hint" />
+                android:hint="@string/enter_city_hint"
+                android:inputType="textCapSentences" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -49,6 +52,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onClickAddCity"
+            android:textColor="@color/colorPrimary"
+            android:background="@drawable/border_button"
             android:text="Add City" />
 
 

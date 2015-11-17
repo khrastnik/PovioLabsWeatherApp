@@ -6,12 +6,15 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.TextView;
 
-public class AddCityActivity extends AppCompatActivity {
+public class AddCityActivity extends AppCompatActivity implements IKeyboardListener{
 
     private EditText inputCityName;
     private TextInputLayout inputLayoutCityName;
@@ -21,14 +24,27 @@ public class AddCityActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_city);
 
-        inputCityName = (EditText) findViewById(R.id.input_city_name);
-        inputLayoutCityName = (TextInputLayout) findViewById(R.id.input_layout_city_name);
+        initGUI();
 
-        inputCityName.addTextChangedListener(new MyTextWatcher(inputCityName));
-
-        setToolbar();
     }
 
+    /**
+     * Init gui components
+     */
+    private void initGUI() {
+
+        setToolbar();
+
+        inputCityName = (EditText) findViewById(R.id.input_city_name);
+        inputLayoutCityName = (TextInputLayout) findViewById(R.id.input_layout_city_name);
+        inputCityName.addTextChangedListener(new MyTextWatcher(inputCityName));
+
+        new KeyboardKeyManager(this).setKeyboardDoneKeyListener(inputCityName);
+    }
+
+    /**
+     * Set toolbar and back navigation arrow
+     */
     private void setToolbar() {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -58,10 +74,42 @@ public class AddCityActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Validate and add new city
+     *
+     * @param view button view
+     */
     public void onClickAddCity(View view) {
-
+        saveNewAddedCity();
     }
 
+
+    /**
+     * Save new added city to db
+     */
+    private void saveNewAddedCity() {
+
+        boolean isValid = validateName();
+
+        if (isValid) {
+
+            String cityName = inputCityName.getText().toString();
+            WeatherCityModel weatherCityModel = new WeatherCityModel(cityName);
+            new WeatherCityManager().addCity(weatherCityModel);
+
+            setResult(RESULT_OK);
+            finish();
+        }
+    }
+
+    @Override
+    public void keyDonePressed() {
+        saveNewAddedCity();
+    }
+
+    /**
+     * Displays a warning when a user delete the city name
+     */
     private class MyTextWatcher implements TextWatcher {
 
         private View view;
@@ -81,27 +129,24 @@ public class AddCityActivity extends AppCompatActivity {
                 case R.id.input_city_name:
                     validateName();
                     break;
-
             }
         }
     }
 
+    /**
+     * Validate city name
+     *
+     * @return true if name is entered or false if not
+     */
     private boolean validateName() {
 
         if (inputCityName.getText().toString().trim().isEmpty()) {
             inputLayoutCityName.setError(getString(R.string.err_city_name));
-            requestFocus(inputCityName);
             return false;
         } else {
             inputLayoutCityName.setErrorEnabled(false);
         }
-
         return true;
     }
 
-    private void requestFocus(View view) {
-        if (view.requestFocus()) {
-            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-        }
-    }
 }

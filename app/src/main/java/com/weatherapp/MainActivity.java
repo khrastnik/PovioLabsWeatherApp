@@ -16,6 +16,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final int REQUEST_CODE_ADD_CITY = 1000;
+
     private RecyclerView recyclerView;
     private WeatherCityAdapter weatherCityAdapter;
     private TextView tvEmptyListHint;
@@ -57,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
      * Get cities from database
      */
     private void setCityItems() {
-        cityItems = new WeatherCityManager().getFakeItems();
+        cityItems = new WeatherCityManager().getItems();
     }
 
     /**
@@ -99,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
     private void startAddCityActivity() {
 
         Intent intent = new Intent(this, AddCityActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, REQUEST_CODE_ADD_CITY);
 
     }
 
@@ -167,5 +169,18 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == REQUEST_CODE_ADD_CITY) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                // The user add new city
+                // refresh list of cities
+                setRecyclerViewData();
+            }
+        }
     }
 }
