@@ -1,11 +1,19 @@
 package com.weatherapp.rest;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.weatherapp.R;
+import com.weatherapp.managers.WeatherCityManager;
+import com.weatherapp.models.WeatherCityModel;
+
+import org.json.JSONObject;
+
+import cz.msebera.android.httpclient.Header;
 
 /**
  * Created by Klemen on 17.11.2015.
@@ -30,5 +38,6 @@ public class RestClient {
 
         client.get(url, requestParams, responseHandler);
     }
+
 
 }

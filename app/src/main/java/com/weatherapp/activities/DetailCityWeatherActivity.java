@@ -7,18 +7,14 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.loopj.android.http.JsonHttpResponseHandler;
 import com.weatherapp.helpers.Const;
 import com.weatherapp.R;
-import com.weatherapp.rest.RestClient;
+import com.weatherapp.interfaces.IHttpRequest;
 import com.weatherapp.managers.WeatherCityManager;
 
-import org.json.JSONObject;
-
-import cz.msebera.android.httpclient.Header;
 import com.weatherapp.models.WeatherCityModel;
 
-public class DetailCityWeatherActivity extends AppCompatActivity {
+public class DetailCityWeatherActivity extends AppCompatActivity implements IHttpRequest<WeatherCityModel> {
 
     private TextView tvCityName, tvCurrentTemperature, tvHumidity, tvDescription;
 
@@ -70,28 +66,7 @@ public class DetailCityWeatherActivity extends AppCompatActivity {
      * @param cityName name of city
      */
     private void getWeatherDataFromAPI(final String cityName) {
-
-        RestClient.get(this, cityName, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-
-                WeatherCityModel weatherCityModel;
-
-                try {
-
-                    weatherCityModel = new WeatherCityManager().getWeatherDetailByJson(response);
-
-                    weatherCityModel.setName(cityName);
-
-                    setWeatherDetail(weatherCityModel);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Toast.makeText(DetailCityWeatherActivity.this, "Weather data for selected city name is not available.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
+        new WeatherCityManager().getWeatherDetailDataFromAPI(getBaseContext(), this, cityName);
     }
 
     /**
@@ -137,5 +112,15 @@ public class DetailCityWeatherActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
 
+    }
+
+    @Override
+    public void onComplete(WeatherCityModel object) {
+        setWeatherDetail(object);
+    }
+
+    @Override
+    public void onFailure() {
+        Toast.makeText(DetailCityWeatherActivity.this, "Weather data for selected city name is not available.", Toast.LENGTH_SHORT).show();
     }
 }

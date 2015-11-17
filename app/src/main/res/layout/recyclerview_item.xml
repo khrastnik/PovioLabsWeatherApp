@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:singleLine="true"
-                android:text="Maribor"
+                android:text="/"
                 android:textSize="30sp" />
 
             <TextView

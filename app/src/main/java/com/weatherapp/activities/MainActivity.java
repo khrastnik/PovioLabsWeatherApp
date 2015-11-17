@@ -3,6 +3,7 @@ package com.weatherapp.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private WeatherCityAdapter weatherCityAdapter;
     private TextView tvEmptyListHint;
     private List<WeatherCityModel> cityItems;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,20 @@ public class MainActivity extends AppCompatActivity {
 
         setRecyclerViewData();
 
+    }
+
+    /**
+     * Set pull to refresh recycler view items
+     */
+    private void setPullToRefresh() {
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Refresh items
+                setRecyclerViewData();
+            }
+        });
     }
 
     /**
@@ -60,8 +76,15 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setAdapter() {
 
-        weatherCityAdapter = new WeatherCityAdapter(this, cityItems);
-        recyclerView.setAdapter(weatherCityAdapter);
+        if (weatherCityAdapter == null) {
+            weatherCityAdapter = new WeatherCityAdapter(this, cityItems);
+            recyclerView.setAdapter(weatherCityAdapter);
+        } else {
+            weatherCityAdapter.notifyDataSet(cityItems);
+        }
+
+        // Stop refresh animation
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     /**
@@ -127,11 +150,14 @@ public class MainActivity extends AppCompatActivity {
         LinearLayoutManager llm = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(llm);
 
-        setRecyclerViewItemListener();
-
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
         tvEmptyListHint = (TextView) findViewById(R.id.empty_list_hint);
 
         initFab();
+
+        setRecyclerViewItemListener();
+
+        setPullToRefresh();
     }
 
     /**

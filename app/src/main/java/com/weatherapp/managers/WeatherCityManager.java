@@ -1,16 +1,21 @@
 package com.weatherapp.managers;
 
 import android.content.Context;
+import android.widget.TextView;
+
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.weatherapp.db.DatabaseHelper;
+import com.weatherapp.interfaces.IHttpRequest;
+import com.weatherapp.models.WeatherCityModel;
+import com.weatherapp.rest.RestClient;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import com.weatherapp.db.DatabaseHelper;
-import com.weatherapp.models.WeatherCityModel;
+import cz.msebera.android.httpclient.Header;
 
 /**
  * Created by Klemen on 17.11.2015.
@@ -60,6 +65,27 @@ public class WeatherCityManager {
         return weatherCityModel;
     }
 
+    /**
+     * Get weather detail data from json object
+     *
+     * @param response json object
+     * @return object weather data
+     * @throws JSONException
+     */
+    public WeatherCityModel getWeatherTemperatureByJson(JSONObject response) throws JSONException {
+
+        WeatherCityModel weatherCityModel = new WeatherCityModel();
+
+        JSONObject main = response.getJSONObject(TAG_MAIN);
+
+        // get temperature from main json object
+        String temp = main.getString(TAG_TEMP);
+
+        weatherCityModel.setCurrentTemperature(Double.valueOf(temp));
+
+        return weatherCityModel;
+    }
+
 
     /**
      * Add city data to db
@@ -101,5 +127,67 @@ public class WeatherCityManager {
         DatabaseHelper databaseHelper = DatabaseHelper.instance(context);
 
         return databaseHelper.deleteItemById(id) == 1;
+    }
+
+    /**
+     * Execute http get request and get weather detail data
+     *
+     * @param context     context
+     * @param httpRequest http listener
+     * @param cityName    name of city
+     */
+    public void getWeatherDetailDataFromAPI(final Context context, final IHttpRequest httpRequest, final String cityName) {
+
+        RestClient.get(context, cityName, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+
+                WeatherCityModel weatherCityModel;
+
+                try {
+
+                    weatherCityModel = getWeatherDetailByJson(response);
+
+                    weatherCityModel.setName(cityName);
+
+                    //setWeatherDetail(weatherCityModel);
+                    httpRequest.onComplete(weatherCityModel);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    httpRequest.onFailure();
+                }
+            }
+        });
+    }
+
+    /**
+     * Execute GET request and get weather temperature by city name
+     *
+     * @param context       app context
+     * @param tvTemperature temperature tex view
+     * @param cityName      name of city
+     */
+    public void getWeatherTemperature(final Context context, final TextView tvTemperature, final String cityName) {
+
+        RestClient.get(context, cityName, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+
+                WeatherCityModel weatherCityModel;
+
+                try {
+
+                    weatherCityModel = getWeatherTemperatureByJson(response);
+
+                    weatherCityModel.setName(cityName);
+
+                    tvTemperature.setText(String.format("%s °C", String.valueOf(weatherCityModel.getCurrentTemperature())));
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 }

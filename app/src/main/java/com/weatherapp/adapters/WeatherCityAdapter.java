@@ -16,6 +16,8 @@ import com.weatherapp.R;
 import java.util.Collections;
 import java.util.List;
 
+import com.weatherapp.interfaces.IHttpRequest;
+import com.weatherapp.managers.WeatherCityManager;
 import com.weatherapp.models.WeatherCityModel;
 
 
@@ -25,6 +27,8 @@ public class WeatherCityAdapter extends RecyclerView.Adapter<WeatherCityAdapter.
 
     private LayoutInflater inflater;
     private Context context;
+
+    private TextView tvTemperature;
 
     public WeatherCityAdapter(Context context, List<WeatherCityModel> cityItems) {
         this.context = context;
@@ -49,6 +53,7 @@ public class WeatherCityAdapter extends RecyclerView.Adapter<WeatherCityAdapter.
 
         holder.cityName.setText(current.getName());
 
+        setCityTemperature(holder.temperature,current);
 
     }
 
@@ -57,18 +62,39 @@ public class WeatherCityAdapter extends RecyclerView.Adapter<WeatherCityAdapter.
         super.onAttachedToRecyclerView(recyclerView);
     }
 
+    public void removeItem(int pos) {
+        cityItems.remove(pos);
+    }
+
     @Override
     public int getItemCount() {
         return cityItems.size();
     }
 
+
     class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView cityName;
+        TextView cityName,temperature;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             cityName = (TextView) itemView.findViewById(R.id.city_name);
+            temperature = (TextView)itemView.findViewById(R.id.city_temperature);
         }
+    }
+
+    /**
+     * Notify dataset changed
+     *
+     * @param items refreshed items
+     */
+    public void notifyDataSet(List<WeatherCityModel> items) {
+
+        this.cityItems = items;
+        notifyDataSetChanged();
+    }
+
+    private void setCityTemperature(TextView tvTemp,WeatherCityModel weatherCityModel){
+        new WeatherCityManager().getWeatherTemperature(context,tvTemp,weatherCityModel.getName());
     }
 }
