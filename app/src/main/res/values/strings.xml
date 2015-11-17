@@ -1,13 +1,13 @@
 <resources>
     <string name="app_name">Simple Weather</string>
     <string name="action_settings">Settings</string>
-    <string name="empty_list_hint">Empty list</string>
+    <string name="empty_list_hint">No cities added</string>
     <string name="add_city">New City</string>
     <string name="detail_city">Detail City Weather</string>
     <string name="enter_city_hint">City Name</string>
     <string name="err_city_name">Enter city name</string>
 
     <string name="weather_api_key">505224b66b7608fea8fea9273821765f</string>
-    <string name="weather_api">api.openweathermap.org/data/2.5/weather?q=</string>
+    <string name="weather_api">http://api.openweathermap.org/data/2.5/weather</string>
 
 </resources>

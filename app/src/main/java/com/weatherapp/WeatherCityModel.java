@@ -57,4 +57,14 @@ public class WeatherCityModel implements Serializable{
     public void setDescription(String description) {
         this.description = description;
     }
+
+    @Override
+    public String toString() {
+        return "WeatherCityModel{" +
+                "name='" + name + '\'' +
+                ", currentTemperature=" + currentTemperature +
+                ", humidity=" + humidity +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }

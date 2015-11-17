@@ -8,10 +8,11 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
+
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -135,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
 
                 Intent intent = new Intent(getBaseContext(), DetailCityWeatherActivity.class);
-                intent.putExtra("city", cityItems.get(position));
+                intent.putExtra(Const.CITY_NAME, cityItems.get(position).getName());
                 startActivity(intent);
             }
         });
