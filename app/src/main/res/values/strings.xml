@@ -6,4 +6,8 @@
     <string name="detail_city">Detail City Weather</string>
     <string name="enter_city_hint">City Name</string>
     <string name="err_city_name">Enter city name</string>
+
+    <string name="weather_api_key">505224b66b7608fea8fea9273821765f</string>
+    <string name="weather_api">api.openweathermap.org/data/2.5/weather?q=</string>
+
 </resources>

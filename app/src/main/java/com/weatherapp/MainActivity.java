@@ -3,7 +3,6 @@ package com.weatherapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,12 +12,11 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
-
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private RecyclerView rv;
+    private RecyclerView recyclerView;
     private WeatherCityAdapter weatherCityAdapter;
     private TextView tvEmptyListHint;
     private List<WeatherCityModel> cityItems;
@@ -34,6 +32,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Get cities, check cities count and set recycler adapter
+     */
     private void setRecyclerViewData() {
 
         setCityItems();
@@ -43,27 +44,40 @@ public class MainActivity extends AppCompatActivity {
         setAdapter();
     }
 
+    /**
+     * Create recycler view adapter
+     */
     private void setAdapter() {
-        weatherCityAdapter = new WeatherCityAdapter(this,cityItems);
-        rv.setAdapter(weatherCityAdapter);
+
+        weatherCityAdapter = new WeatherCityAdapter(this, cityItems);
+        recyclerView.setAdapter(weatherCityAdapter);
     }
 
-    private void setCityItems(){
+    /**
+     * Get cities from database
+     */
+    private void setCityItems() {
         cityItems = new WeatherCityManager().getFakeItems();
     }
 
-    private void checkEmptyRecyclerView(){
+    /**
+     * Check if cities are added
+     */
+    private void checkEmptyRecyclerView() {
 
         int cityCount = cityItems.size();
 
-        if(cityCount == 0){
+        if (cityCount == 0) {
             tvEmptyListHint.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             tvEmptyListHint.setVisibility(View.GONE);
         }
 
     }
 
+    /**
+     * Init floating action button
+     */
     private void initFab() {
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -79,34 +93,42 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void startAddCityActivity(){
+    /**
+     * Start activity for add new city
+     */
+    private void startAddCityActivity() {
 
-        Intent intent = new Intent(this,AddCityActivity.class);
+        Intent intent = new Intent(this, AddCityActivity.class);
         startActivity(intent);
-
 
     }
 
+    /**
+     * Init gui components
+     */
     private void initGUI() {
 
         setToolbar();
 
-        rv = (RecyclerView)findViewById(R.id.recycler_view);
-        rv.setItemAnimator(new DefaultItemAnimator());
-        rv.setHasFixedSize(true);
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(this);
-        rv.setLayoutManager(llm);
+        recyclerView.setLayoutManager(llm);
 
         setRecyclerViewItemListener();
 
-        tvEmptyListHint = (TextView)findViewById(R.id.empty_list_hint);
+        tvEmptyListHint = (TextView) findViewById(R.id.empty_list_hint);
 
         initFab();
     }
 
+    /**
+     * Set recycler item click listener
+     */
     private void setRecyclerViewItemListener() {
 
-        ItemClickSupport.addTo(rv).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+        ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
             @Override
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
 
@@ -117,6 +139,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Set activity toolbar
+     */
     private void setToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
