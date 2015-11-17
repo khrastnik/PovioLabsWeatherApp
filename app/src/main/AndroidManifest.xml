@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
@@ -21,12 +21,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AddCityActivity"
+            android:name=".activities.AddCityActivity"
             android:label="@string/add_city"
             android:windowSoftInputMode="stateAlwaysVisible"
             android:theme="@style/BaseTheme" >
         </activity>
-        <activity android:name=".DetailCityWeatherActivity"
+        <activity android:name=".activities.DetailCityWeatherActivity"
             android:label="@string/detail_city"
             android:theme="@style/BaseTheme">
         </activity>

@@ -1,22 +1,22 @@
-package com.weatherapp;
+package com.weatherapp.activities;
 
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.weatherapp.helpers.Const;
+import com.weatherapp.R;
+import com.weatherapp.rest.RestClient;
+import com.weatherapp.managers.WeatherCityManager;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import cz.msebera.android.httpclient.Header;
+import com.weatherapp.models.WeatherCityModel;
 
 public class DetailCityWeatherActivity extends AppCompatActivity {
 

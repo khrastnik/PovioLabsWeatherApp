@@ -1,10 +1,11 @@
-package com.weatherapp;
+package com.weatherapp.rest;
 
 import android.content.Context;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.weatherapp.R;
 
 /**
  * Created by Klemen on 17.11.2015.

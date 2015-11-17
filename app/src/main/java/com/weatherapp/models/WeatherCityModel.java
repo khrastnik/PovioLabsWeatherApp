@@ -1,4 +1,4 @@
-package com.weatherapp;
+package com.weatherapp.models;
 
 import java.io.Serializable;
 
@@ -7,6 +7,7 @@ import java.io.Serializable;
  */
 public class WeatherCityModel implements Serializable{
 
+    private int id;
     private String name;
     private double currentTemperature;
     private int humidity;
@@ -24,6 +25,14 @@ public class WeatherCityModel implements Serializable{
         this.currentTemperature = currentTemperature;
         this.humidity = humidity;
         this.description = description;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getName() {

@@ -1,7 +1,9 @@
-package com.weatherapp;
+package com.weatherapp.helpers;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
+import com.weatherapp.R;
 
 /**
  * Created by Klemen on 13.10.2015.

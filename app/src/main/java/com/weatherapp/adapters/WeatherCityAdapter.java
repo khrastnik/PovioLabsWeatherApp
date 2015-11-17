@@ -1,4 +1,4 @@
-package com.weatherapp;
+package com.weatherapp.adapters;
 
 /**
  * Created by Klemen on 17.11.2015.
@@ -11,8 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.weatherapp.R;
+
 import java.util.Collections;
 import java.util.List;
+
+import com.weatherapp.models.WeatherCityModel;
 
 
 public class WeatherCityAdapter extends RecyclerView.Adapter<WeatherCityAdapter.MyViewHolder> {

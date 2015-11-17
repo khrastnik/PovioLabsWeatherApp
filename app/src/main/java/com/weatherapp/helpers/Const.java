@@ -1,4 +1,4 @@
-package com.weatherapp;
+package com.weatherapp.helpers;
 
 /**
  * Created by Klemen on 17.11.2015.

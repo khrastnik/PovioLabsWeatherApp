@@ -1,9 +1,11 @@
-package com.weatherapp;
+package com.weatherapp.managers;
 
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.weatherapp.interfaces.IKeyboardListener;
 
 /**
  * Created by Klemen on 17.11.2015.

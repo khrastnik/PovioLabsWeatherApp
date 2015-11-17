@@ -1,4 +1,4 @@
-package com.weatherapp;
+package com.weatherapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +13,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.weatherapp.helpers.Const;
+import com.weatherapp.helpers.ItemClickSupport;
+import com.weatherapp.R;
+import com.weatherapp.adapters.WeatherCityAdapter;
+import com.weatherapp.managers.WeatherCityManager;
+
 import java.util.List;
+
+import com.weatherapp.models.WeatherCityModel;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -60,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
      * Get cities from database
      */
     private void setCityItems() {
-        cityItems = new WeatherCityManager().getItems();
+        cityItems = new WeatherCityManager().getAll(this);
     }
 
     /**

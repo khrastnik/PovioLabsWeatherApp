@@ -1,4 +1,4 @@
-package com.weatherapp;
+package com.weatherapp.activities;
 
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -6,15 +6,18 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
-import android.widget.TextView;
 
-public class AddCityActivity extends AppCompatActivity implements IKeyboardListener{
+import com.weatherapp.interfaces.IKeyboardListener;
+import com.weatherapp.managers.KeyboardKeyManager;
+import com.weatherapp.R;
+import com.weatherapp.managers.WeatherCityManager;
+
+import com.weatherapp.models.WeatherCityModel;
+
+public class AddCityActivity extends AppCompatActivity implements IKeyboardListener {
 
     private EditText inputCityName;
     private TextInputLayout inputLayoutCityName;
@@ -95,7 +98,7 @@ public class AddCityActivity extends AppCompatActivity implements IKeyboardListe
 
             String cityName = inputCityName.getText().toString();
             WeatherCityModel weatherCityModel = new WeatherCityModel(cityName);
-            new WeatherCityManager().addCity(weatherCityModel);
+            new WeatherCityManager().addCity(this,weatherCityModel);
 
             setResult(RESULT_OK);
             finish();
