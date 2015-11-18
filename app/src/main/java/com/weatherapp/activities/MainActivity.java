@@ -1,8 +1,11 @@
 package com.weatherapp.activities;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -13,6 +16,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.weatherapp.helpers.Const;
@@ -20,19 +24,20 @@ import com.weatherapp.helpers.RecyclerViewIteClickHelper;
 import com.weatherapp.R;
 import com.weatherapp.adapters.WeatherCityAdapter;
 import com.weatherapp.helpers.RecyclerViewTouchHelper;
+import com.weatherapp.interfaces.IDeleteListener;
 import com.weatherapp.managers.WeatherCityManager;
 
 import java.util.List;
 
 import com.weatherapp.models.WeatherCityModel;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements IDeleteListener {
 
     private static final int REQUEST_CODE_ADD_CITY = 1000;
 
     private RecyclerView recyclerView;
     private WeatherCityAdapter weatherCityAdapter;
-    private TextView tvEmptyListHint;
+    private RelativeLayout emptyListHintLayout;
     private List<WeatherCityModel> cityItems;
     private SwipeRefreshLayout swipeRefreshLayout;
 
@@ -115,29 +120,11 @@ public class MainActivity extends AppCompatActivity {
         int cityCount = cityItems.size();
 
         if (cityCount == 0) {
-            tvEmptyListHint.setVisibility(View.VISIBLE);
+            emptyListHintLayout.setVisibility(View.VISIBLE);
         } else {
-            tvEmptyListHint.setVisibility(View.GONE);
+            emptyListHintLayout.setVisibility(View.GONE);
         }
 
-    }
-
-    /**
-     * Init floating action button
-     */
-    private void initFab() {
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();*/
-                startAddCityActivity();
-
-            }
-        });
     }
 
     /**
@@ -164,9 +151,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(llm);
 
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
-        tvEmptyListHint = (TextView) findViewById(R.id.empty_list_hint);
-
-        initFab();
+        emptyListHintLayout = (RelativeLayout) findViewById(R.id.empty_list_hint);
 
         setRecyclerViewItemListener();
 
@@ -231,5 +216,24 @@ public class MainActivity extends AppCompatActivity {
                 setRecyclerViewData();
             }
         }
+    }
+
+    @Override
+    public void onDeleteItem(int id) {
+
+        new WeatherCityManager().deleteItem(this, id);
+
+        Snackbar.make(findViewById(android.R.id.content), "Item has been deleted.", Snackbar.LENGTH_LONG)
+                .setActionTextColor(Color.RED)
+                .show();
+
+    }
+
+    /**
+     * Add new city listener
+     * @param view view
+     */
+    public void onClickAddCity(View view) {
+        startAddCityActivity();
     }
 }

@@ -9,16 +9,19 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.weatherapp.R;
 
 import java.util.Collections;
 import java.util.List;
 
+import com.weatherapp.interfaces.IDeleteListener;
 import com.weatherapp.managers.WeatherCityManager;
 import com.weatherapp.models.WeatherCityModel;
 
@@ -29,11 +32,13 @@ public class WeatherCityAdapter extends RecyclerView.Adapter<WeatherCityAdapter.
 
     private LayoutInflater inflater;
     private Context context;
+    private IDeleteListener deleteListener;
 
     public WeatherCityAdapter(Context context, List<WeatherCityModel> cityItems) {
         this.context = context;
-        inflater = LayoutInflater.from(context);
+        this.inflater = LayoutInflater.from(context);
         this.cityItems = cityItems;
+        this.deleteListener = (IDeleteListener) context;
     }
 
 
@@ -62,17 +67,20 @@ public class WeatherCityAdapter extends RecyclerView.Adapter<WeatherCityAdapter.
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-    public void remove(int position) {
+    /**
+     * Remove item from recycler view
+     * @param index item position
+     */
+    public void remove(int index) {
 
-        cityItems.remove(position);
+        int itemId = cityItems.get(index).getId();
 
-        new WeatherCityManager().deleteItem(context, cityItems.get(position).getId());
+        cityItems.remove(index);
 
-       /* Snackbar.make(((Activity)context).findViewById(android.R.id.content), "Item has been deleted.", Snackbar.LENGTH_LONG)
-                .setActionTextColor(Color.RED)
-                .show();*/
+        notifyItemRemoved(index);
 
-        notifyItemRemoved(position);
+        deleteListener.onDeleteItem(itemId);
+
     }
 
     @Override
