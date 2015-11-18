@@ -227,6 +227,8 @@ public class MainActivity extends AppCompatActivity implements IDeleteListener {
                 .setActionTextColor(Color.RED)
                 .show();
 
+        checkEmptyRecyclerView();
+
     }
 
     /**
