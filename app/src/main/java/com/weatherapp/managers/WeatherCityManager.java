@@ -59,7 +59,9 @@ public class WeatherCityManager {
         // get humudity from main json object
         String humidity = main.getString(TAG_HUMIDITY);
 
-        weatherCityModel.setCurrentTemperature(Double.valueOf(temp));
+        double celsius = new TemperatureConverter().kelvinToCelsius(Double.valueOf(temp));
+
+        weatherCityModel.setCurrentTemperature(celsius);
         weatherCityModel.setHumidity(Integer.valueOf(humidity));
 
         return weatherCityModel;
@@ -81,7 +83,9 @@ public class WeatherCityManager {
         // get temperature from main json object
         String temp = main.getString(TAG_TEMP);
 
-        weatherCityModel.setCurrentTemperature(Double.valueOf(temp));
+        double celsius = new TemperatureConverter().kelvinToCelsius(Double.valueOf(temp));
+
+        weatherCityModel.setCurrentTemperature(celsius);
 
         return weatherCityModel;
     }
@@ -185,6 +189,7 @@ public class WeatherCityManager {
                     tvTemperature.setText(String.format("%s °C", String.valueOf(weatherCityModel.getCurrentTemperature())));
 
                 } catch (Exception e) {
+                    tvTemperature.setText("");
                     e.printStackTrace();
                 }
             }

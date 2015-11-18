@@ -22,7 +22,7 @@
         </activity>
         <activity
             android:name=".activities.AddCityActivity"
-            android:label="@string/add_city"
+            android:label="@string/new_city"
             android:windowSoftInputMode="stateAlwaysVisible"
             android:theme="@style/BaseTheme" >
         </activity>

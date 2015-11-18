@@ -223,7 +223,7 @@ public class MainActivity extends AppCompatActivity implements IDeleteListener {
 
         new WeatherCityManager().deleteItem(this, id);
 
-        Snackbar.make(findViewById(android.R.id.content), "Item has been deleted.", Snackbar.LENGTH_LONG)
+        Snackbar.make(findViewById(android.R.id.content), "City has been deleted.", Snackbar.LENGTH_LONG)
                 .setActionTextColor(Color.RED)
                 .show();
 

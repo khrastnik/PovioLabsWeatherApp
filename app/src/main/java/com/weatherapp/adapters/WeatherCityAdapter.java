@@ -111,6 +111,11 @@ public class WeatherCityAdapter extends RecyclerView.Adapter<WeatherCityAdapter.
         notifyDataSetChanged();
     }
 
+    /**
+     * Set city temperature
+     * @param tvTemp temperature text view
+     * @param weatherCityModel weather object
+     */
     private void setCityTemperature(TextView tvTemp, WeatherCityModel weatherCityModel) {
         new WeatherCityManager().getWeatherTemperature(context, tvTemp, weatherCityModel.getName());
     }
